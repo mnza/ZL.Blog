@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Blogs";
+}
+@model IEnumerable<Blog>
+
+<div class="container">
+    <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+        @foreach (var group in Model.GroupBy(x => x.Category))
+        {
+            <div class="col">
+                <div class="card" style="width: 15rem;">
+                    <div class="card-header">
+                        <span class="text-primary">
+                            @group.Key
+                        </span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        @foreach (Blog b in group)
+                        {
+                            <li class="list-group-item">
+                                <a class="text-decoration-none text-dark" href="blogs/@b.Category/@b.Path?.Base64Encode()">@b.Name</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>

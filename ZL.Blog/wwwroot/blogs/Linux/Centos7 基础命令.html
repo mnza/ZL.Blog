@@ -1,0 +1,45 @@
+<html>
+<head>
+  <title>Evernote Export</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/607246 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="582"/>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>来源：</b></td><td><a href="https://blog.csdn.net/Swangshenlan/article/details/104696710?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~aggregatepage~first_rank_ecpm_v1~rank_v31_ecpm-1-104696710.pc_agg_new_rank&utm_term=centos7%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E5%91%BD%E4%BB%A4&spm=1000.2123.3001.4430"><i>https://blog.csdn.net/Swangshenlan/article/details/104696710?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~aggregatepage~first_rank_ecpm_v1~rank_v31_ecpm-1-104696710.pc_agg_new_rank&amp;utm_term=centos7%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E5%91%BD%E4%BB%A4&amp;spm=1000.2123.3001.4430</i></a></td></tr>
+</table>
+</div>
+<br/>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">查看服务器时间</h4>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">date 
+</code></pre>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">显示格式为：Fri May 12 14:16:00 CST 2023<br/>
+显示北京时间：</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">TZ='Asia/Shanghai' date +'%Z %Y-%m-%d %H:%M:%S'
+</code></pre>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">显示格式为：CST 2023-05-12 14:16:52</p>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">查看防火墙状态</h4>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">firewall-cmd --state
+</code></pre>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">输出：<code style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; color: #c1788b; padding: 4px 4px 2px 0; letter-spacing: -.3px;">running</code> 表示防火墙处于开启<br/>
+输出：<code style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; color: #c1788b; padding: 4px 4px 2px 0; letter-spacing: -.3px;">not running</code> 表示防火墙处于关闭状态</p>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">文件操作</h3>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">删除文件</h4>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;"><code style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; color: #c1788b; padding: 4px 4px 2px 0; letter-spacing: -.3px;">rm</code> [选项]</p>
+<table style="margin: 2px 0 14px; color: #333; width: auto; border-collapse: collapse; box-sizing: border-box;"><thead style="line-height: 160%; box-sizing: content-box;"><tr style="line-height: 160%; box-sizing: content-box;"><th style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #72777b; border-top: 0; background-color: #7b8184; font-weight: 300; color: #fff; padding-top: 6px;"></th><th style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #72777b; border-top: 0; background-color: #7b8184; font-weight: 300; color: #fff; padding-top: 6px;"></th><th style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #72777b; border-top: 0; background-color: #7b8184; font-weight: 300; color: #fff; padding-top: 6px;"></th></tr></thead><tbody style="line-height: 160%; box-sizing: content-box;"><tr style="line-height: 160%; box-sizing: content-box;"><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">-f</td><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">-force</td><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">j忽略不存在的文件，强制删除，无任何提示</td></tr><tr style="line-height: 160%; box-sizing: content-box;"><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">-i</td><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">-interactive</td><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">进行交互式地删除</td></tr><tr style="line-height: 160%; box-sizing: content-box;"><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">-r -R</td><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">--recursive</td><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">递归式地删除列出的目录下的所有目录和文件</td></tr><tr style="line-height: 160%; box-sizing: content-box;"><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">-v</td><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">--verbose</td><td style="line-height: 160%; box-sizing: content-box; padding: 5px 14px 5px 12px; border: 1px solid #eaeaea;">详细显示进行的步骤</td></tr></tbody></table>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">删除指定目录下所有东西</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">rm -ivrf dirname
+</code></pre>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%23%23%23%20%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E9%97%B4%0A%60%60%60%0Adate%20%0A%60%60%60%0A%E6%98%BE%E7%A4%BA%E6%A0%BC%E5%BC%8F%E4%B8%BA%EF%BC%9AFri%20May%2012%2014%3A16%3A00%20CST%202023%0A%E6%98%BE%E7%A4%BA%E5%8C%97%E4%BA%AC%E6%97%B6%E9%97%B4%EF%BC%9A%0A%60%60%60%0ATZ%3D'Asia%2FShanghai'%20date%20%2B'%25Z%20%25Y-%25m-%25d%20%25H%3A%25M%3A%25S'%0A%60%60%60%0A%E6%98%BE%E7%A4%BA%E6%A0%BC%E5%BC%8F%E4%B8%BA%EF%BC%9ACST%202023-05-12%2014%3A16%3A52%0A%0A%23%23%23%23%20%E6%9F%A5%E7%9C%8B%E9%98%B2%E7%81%AB%E5%A2%99%E7%8A%B6%E6%80%81%0A%60%60%60%0Afirewall-cmd%20--state%0A%60%60%60%0A%E8%BE%93%E5%87%BA%EF%BC%9A%60running%60%20%E8%A1%A8%E7%A4%BA%E9%98%B2%E7%81%AB%E5%A2%99%E5%A4%84%E4%BA%8E%E5%BC%80%E5%90%AF%0A%E8%BE%93%E5%87%BA%EF%BC%9A%60not%20running%60%20%E8%A1%A8%E7%A4%BA%E9%98%B2%E7%81%AB%E5%A2%99%E5%A4%84%E4%BA%8E%E5%85%B3%E9%97%AD%E7%8A%B6%E6%80%81%0A%0A%23%23%23%20%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%0A%23%23%23%23%20%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%0A%0A%60rm%60%20%5B%E9%80%89%E9%A1%B9%5D%0A%0A%7C%20%20%7C%20%20%7C%20%20%7C%0A%7C%20---%20%7C%20---%20%7C%20---%20%7C%0A%7C%20-f%20%20%7C%20-force%20%7C%20j%E5%BF%BD%E7%95%A5%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4%EF%BC%8C%E6%97%A0%E4%BB%BB%E4%BD%95%E6%8F%90%E7%A4%BA%20%20%7C%0A%7C%20-i%20%20%7C%20-interactive%20%7C%20%E8%BF%9B%E8%A1%8C%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%9C%B0%E5%88%A0%E9%99%A4%20%20%7C%0A%7C%20-r%20-R%20%7C%20--recursive%20%7C%20%E9%80%92%E5%BD%92%E5%BC%8F%E5%9C%B0%E5%88%A0%E9%99%A4%E5%88%97%E5%87%BA%E7%9A%84%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84%E6%89%80%E6%9C%89%E7%9B%AE%E5%BD%95%E5%92%8C%E6%96%87%E4%BB%B6%20%7C%0A%7C%20-v%20%7C%20--verbose%20%7C%20%E8%AF%A6%E7%BB%86%E6%98%BE%E7%A4%BA%E8%BF%9B%E8%A1%8C%E7%9A%84%E6%AD%A5%E9%AA%A4%20%7C%0A%0A%E5%88%A0%E9%99%A4%E6%8C%87%E5%AE%9A%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E4%B8%9C%E8%A5%BF%0A%60%60%60%0Arm%20-ivrf%20dirname%0A%60%60%60</center></span>
+</div></body></html> 

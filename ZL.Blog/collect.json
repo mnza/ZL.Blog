@@ -1,0 +1,108 @@
+{
+  "collects": [
+    {
+      "name": "V5",
+      "url": "https://v5.bootcss.com/",
+      "description": "",
+      "icon": "",
+      "category": "BootStrap",
+      "color": ""
+    },
+    {
+      "name": "V4",
+      "url": "https://v4.bootcss.com/",
+      "description": "",
+      "icon": "",
+      "category": "BootStrap",
+      "color": ""
+    },
+    {
+      "name": "V3",
+      "url": "https://v3.bootcss.com/",
+      "description": "",
+      "icon": "",
+      "category": "BootStrap",
+      "color": ""
+    },
+    {
+      "name": "Github",
+      "url": "https://github.com/",
+      "description": "",
+      "icon": "bi-github",
+      "category": "常用",
+      "color": ""
+    },
+    {
+      "name": "ChatGPT",
+      "url": "https://poe.com/ChatGPT",
+      "description": "",
+      "icon": "bi-chat-dots",
+      "category": "常用",
+      "color": ""
+    },
+    {
+      "name": "Stack overflow",
+      "url": "https://stackoverflow.com/",
+      "description": "",
+      "icon": "bi-stack-overflow text-warning",
+      "category": "常用",
+      "color": ""
+    },
+    {
+      "name": "网易邮箱",
+      "url": "https://mail.163.com/",
+      "description": "",
+      "icon": "bi-envelope text-danger",
+      "category": "常用",
+      "color": ""
+    },
+    {
+      "name": "设计模式",
+      "url": "https://refactoringguru.cn/",
+      "description": "",
+      "icon": "bi-bookmark-star text-danger",
+      "category": "常用",
+      "color": ""
+    },
+    {
+      "name": "邮箱",
+      "url": "https://mail.bjgoodwill.com/",
+      "description": "",
+      "icon": "bi-envelope text-danger",
+      "category": "工作",
+      "color": ""
+    },
+    {
+      "name": "EPM",
+      "url": "https://epm.bjgoodwill.com/",
+      "description": "",
+      "icon": "bi-boxes text-danger",
+      "category": "工作",
+      "color": ""
+    },
+    {
+      "name": "abp",
+      "url": "https://abp.io/",
+      "description": "",
+      "icon": "",
+      "category": "官方文档",
+      "color": ""
+    },
+    {
+      "name": "Electron",
+      "url": "https://www.electronjs.org/zh/",
+      "description": "",
+      "icon": "",
+      "category": "官方文档",
+      "color": ""
+    },
+    {
+      "name": "Electron",
+      "url": "https://www.electronjs.org/zh/",
+      "description": "",
+      "icon": "",
+      "category": "官方文档",
+      "color": ""
+    }
+  ]
+}

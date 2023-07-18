@@ -1,0 +1,76 @@
+<html>
+<head>
+  <title>Evernote Export</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/607246 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="562"/>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>来源：</b></td><td><a href="https://www.csdn.net/tags/OtDaUg3sMDgwNi1ibG9n.html"><i>https://www.csdn.net/tags/OtDaUg3sMDgwNi1ibG9n.html</i></a></td></tr>
+</table>
+</div>
+<br/>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">查看所有启动项</h3>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">systemctl list-unit-files
+</code></pre>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">查看已开启的开机启动项</h3>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">systemctl list-unit-files | grep enabled
+</code></pre>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">设置开机启动项流程</h3>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">1. 新建服务文件</h4>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">vim /etc/systemd/system/nginx.service
+</code></pre>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">2. 服务文件内容</h4>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">[Unit]
+Description=nginx - high performance web
+serverAfter=network.target remote-fs.target nss-lookup.target
+[Service]
+Type=forking
+ExecStart=/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+ExecReload=/usr/local/nginx/sbin/nginx -s reload
+ExecStop=/usr/local/nginx/sbin/nginx -s stop
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">3. 设置开机启动</h4>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">systemctl enbale nginx.service
+</code></pre>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">4. 启动服务</h4>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">systemctl start nginx.service
+</code></pre>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">5. 其他命令</h4>
+<h5 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 16px; color: #333;">停止开机启动</h5>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">systemctl disable nginx.service
+</code></pre>
+<h5 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 16px; color: #333;">查看服务状态</h5>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">systemctl status nginx.service
+</code></pre>
+<h5 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 16px; color: #333;">重启服务</h5>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">systemctl restart nginx.service
+</code></pre>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">安装mysql</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">一. yum方式安装</h3>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">1. 由于centos7中默认安装了MariaDB需要先进行卸载</h4>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">rpm -qa | grep -i mariadb
+</code></pre>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;"><img src="Centos7 查看开机启动项信息_files/Image.png" type="image/png" data-filename="Image.png"/></p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">rpm -e --nodeps mariadb-libs-5.5.68-1.el7.x86_64
+</code></pre>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">2. 下载MySQL仓库并安装</h4>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">wget https://repo.mysql.com//mysql80-community-release-el7-3.noarch.rpm
+</code></pre>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">yum -y install mysql80-community-release-el7-3.noarch.rpm
+</code></pre>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%23%23%20%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E5%90%AF%E5%8A%A8%E9%A1%B9%0A%60%60%60%20sh%0Asystemctl%20list-unit-files%0A%60%60%60%0A%23%23%23%20%E6%9F%A5%E7%9C%8B%E5%B7%B2%E5%BC%80%E5%90%AF%E7%9A%84%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E9%A1%B9%0A%60%60%60%20sh%0Asystemctl%20list-unit-files%20%7C%20grep%20enabled%0A%60%60%60%0A%23%23%23%20%E8%AE%BE%E7%BD%AE%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E9%A1%B9%E6%B5%81%E7%A8%8B%0A%0A%23%23%23%23%201.%20%E6%96%B0%E5%BB%BA%E6%9C%8D%E5%8A%A1%E6%96%87%E4%BB%B6%0A%60%60%60%0Avim%20%2Fetc%2Fsystemd%2Fsystem%2Fnginx.service%0A%60%60%60%0A%23%23%23%23%202.%20%E6%9C%8D%E5%8A%A1%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%0A%60%60%60%0A%5BUnit%5D%0ADescription%3Dnginx%20-%20high%20performance%20web%0AserverAfter%3Dnetwork.target%20remote-fs.target%20nss-lookup.target%0A%5BService%5D%0AType%3Dforking%0AExecStart%3D%2Fusr%2Flocal%2Fnginx%2Fsbin%2Fnginx%20-c%20%2Fusr%2Flocal%2Fnginx%2Fconf%2Fnginx.conf%0AExecReload%3D%2Fusr%2Flocal%2Fnginx%2Fsbin%2Fnginx%20-s%20reload%0AExecStop%3D%2Fusr%2Flocal%2Fnginx%2Fsbin%2Fnginx%20-s%20stop%0A%5BInstall%5D%0AWantedBy%3Dmulti-user.target%0A%60%60%60%0A%23%23%23%23%203.%20%E8%AE%BE%E7%BD%AE%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%0A%60%60%60%0Asystemctl%20enbale%20nginx.service%0A%60%60%60%0A%23%23%23%23%204.%20%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%0A%60%60%60%0Asystemctl%20start%20nginx.service%0A%60%60%60%0A%23%23%23%23%205.%20%E5%85%B6%E4%BB%96%E5%91%BD%E4%BB%A4%0A%23%23%23%23%23%20%E5%81%9C%E6%AD%A2%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%0A%60%60%60%0Asystemctl%20disable%20nginx.service%0A%60%60%60%0A%23%23%23%23%23%20%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81%0A%60%60%60%0Asystemctl%20status%20nginx.service%0A%60%60%60%0A%23%23%23%23%23%20%E9%87%8D%E5%90%AF%E6%9C%8D%E5%8A%A1%0A%60%60%60%0Asystemctl%20restart%20nginx.service%0A%60%60%60%0A%0A%23%23%20%E5%AE%89%E8%A3%85mysql%0A%23%23%23%20%E4%B8%80.%20yum%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85%0A%23%23%23%23%201.%20%E7%94%B1%E4%BA%8Ecentos7%E4%B8%AD%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E4%BA%86MariaDB%E9%9C%80%E8%A6%81%E5%85%88%E8%BF%9B%E8%A1%8C%E5%8D%B8%E8%BD%BD%0A%60%60%60%0Arpm%20-qa%20%7C%20grep%20-i%20mariadb%0A%60%60%60%0A!%5Ba9d0bd024949b2abd017cc837b367ddd.png%5D(en-resource%3A%2F%2Fdatabase%2F722%3A1)%0A%60%60%60%0Arpm%20-e%20--nodeps%20mariadb-libs-5.5.68-1.el7.x86_64%0A%60%60%60%0A%23%23%23%23%202.%20%E4%B8%8B%E8%BD%BDMySQL%E4%BB%93%E5%BA%93%E5%B9%B6%E5%AE%89%E8%A3%85%0A%60%60%60%0Awget%20https%3A%2F%2Frepo.mysql.com%2F%2Fmysql80-community-release-el7-3.noarch.rpm%0A%60%60%60%0A%60%60%60%0Ayum%20-y%20install%20mysql80-community-release-el7-3.noarch.rpm%0A%60%60%60%0A</center></span>
+</div></body></html> 

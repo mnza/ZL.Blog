@@ -1,0 +1,90 @@
+<html>
+<head>
+  <title>Evernote Export</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/607246 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="726"/>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">1. 安装NTP服务</h3>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">yum install ntp ntpdate -y
+</code></pre>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2. 修改配置文件</h3>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;"># For more information about this file, see the man pages
+# ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).
+
+driftfile /var/lib/ntp/drift
+
+# Permit time synchronization with our time source, but do not
+# permit the source to query or modify the service on this system.
+restrict default nomodify notrap nopeer noquery
+
+# Permit all access over the loopback interface.  This could
+# be tightened as well, but to do so would effect some of
+# the administrative functions.
+restrict 120.25.115.20 #允许阿里云可以访问本机，并可以修改本机时间
+restrict 203.107.6.88   #阿里云2
+restrict 127.0.0.1 
+restrict ::1
+#restrict 192.168.78.0 mask 255.255.255.0 nomodify  #允许局域网内其他机器访问本机 ，但不能修改本机时间
+
+restrict default nomodify notrap #允许任何人来同步;
+
+# Hosts on local network are less restricted.
+#restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap
+
+# Use public servers from the pool.ntp.org project.
+# Please consider joining the pool (http://www.pool.ntp.org/join.html).
+# 外围时间服务器地址，可配置多个，从上到下依次访问
+server 120.25.115.20 #阿里云1
+server 203.107.6.88   #阿里云2
+
+# 本地服务器的stratum大小不能超过16;
+fudge 127.127.1.0 stratum 8
+
+#broadcast 192.168.1.255 autokey	# broadcast server
+#broadcastclient			# broadcast client
+#broadcast 224.0.1.1 autokey		# multicast server
+#multicastclient 224.0.1.1		# multicast client
+#manycastserver 239.255.254.254		# manycast server
+#manycastclient 239.255.254.254 autokey # manycast client
+
+# Enable public key cryptography.
+#crypto
+
+includefile /etc/ntp/crypto/pw
+
+# Key file containing the keys and key identifiers used when operating
+# with symmetric key cryptography. 
+keys /etc/ntp/keys
+
+# Specify the key identifiers which are trusted.
+#trustedkey 4 8 42
+
+# Specify the key identifier to use with the ntpdc utility.
+#requestkey 8
+
+# Specify the key identifier to use with the ntpq utility.
+#controlkey 8
+
+# Enable writing of statistics records.
+#statistics clockstats cryptostats loopstats peerstats
+
+# Disable the monitoring facility to prevent amplification attacks using ntpdc
+# monlist command when default restrict does not include the noquery flag. See
+# CVE-2013-5211 for more details.
+# Note: Monitoring will not be disabled with the limited restriction flag.
+disable monitor
+
+</code></pre>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%23%23%201.%20%E5%AE%89%E8%A3%85NTP%E6%9C%8D%E5%8A%A1%0A%60%60%60%0Ayum%20install%20ntp%20ntpdate%20-y%0A%60%60%60%0A%23%23%23%202.%20%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%0A%60%60%60%0A%23%20For%20more%20information%20about%20this%20file%2C%20see%20the%20man%20pages%0A%23%20ntp.conf(5)%2C%20ntp_acc(5)%2C%20ntp_auth(5)%2C%20ntp_clock(5)%2C%20ntp_misc(5)%2C%20ntp_mon(5).%0A%0Adriftfile%20%2Fvar%2Flib%2Fntp%2Fdrift%0A%0A%23%20Permit%20time%20synchronization%20with%20our%20time%20source%2C%20but%20do%20not%0A%23%20permit%20the%20source%20to%20query%20or%20modify%20the%20service%20on%20this%20system.%0Arestrict%20default%20nomodify%20notrap%20nopeer%20noquery%0A%0A%23%20Permit%20all%20access%20over%20the%20loopback%20interface.%20%20This%20could%0A%23%20be%20tightened%20as%20well%2C%20but%20to%20do%20so%20would%20effect%20some%20of%0A%23%20the%20administrative%20functions.%0Arestrict%20120.25.115.20%20%23%E5%85%81%E8%AE%B8%E9%98%BF%E9%87%8C%E4%BA%91%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%E6%9C%AC%E6%9C%BA%EF%BC%8C%E5%B9%B6%E5%8F%AF%E4%BB%A5%E4%BF%AE%E6%94%B9%E6%9C%AC%E6%9C%BA%E6%97%B6%E9%97%B4%0Arestrict%20203.107.6.88%20%20%20%23%E9%98%BF%E9%87%8C%E4%BA%912%0Arestrict%20127.0.0.1%20%0Arestrict%20%3A%3A1%0A%23restrict%20192.168.78.0%20mask%20255.255.255.0%20nomodify%20%20%23%E5%85%81%E8%AE%B8%E5%B1%80%E5%9F%9F%E7%BD%91%E5%86%85%E5%85%B6%E4%BB%96%E6%9C%BA%E5%99%A8%E8%AE%BF%E9%97%AE%E6%9C%AC%E6%9C%BA%20%EF%BC%8C%E4%BD%86%E4%B8%8D%E8%83%BD%E4%BF%AE%E6%94%B9%E6%9C%AC%E6%9C%BA%E6%97%B6%E9%97%B4%0A%0Arestrict%20default%20nomodify%20notrap%20%23%E5%85%81%E8%AE%B8%E4%BB%BB%E4%BD%95%E4%BA%BA%E6%9D%A5%E5%90%8C%E6%AD%A5%3B%0A%0A%23%20Hosts%20on%20local%20network%20are%20less%20restricted.%0A%23restrict%20192.168.1.0%20mask%20255.255.255.0%20nomodify%20notrap%0A%0A%23%20Use%20public%20servers%20from%20the%20pool.ntp.org%20project.%0A%23%20Please%20consider%20joining%20the%20pool%20(http%3A%2F%2Fwww.pool.ntp.org%2Fjoin.html).%0A%23%20%E5%A4%96%E5%9B%B4%E6%97%B6%E9%97%B4%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%A4%9A%E4%B8%AA%EF%BC%8C%E4%BB%8E%E4%B8%8A%E5%88%B0%E4%B8%8B%E4%BE%9D%E6%AC%A1%E8%AE%BF%E9%97%AE%0Aserver%20120.25.115.20%20%23%E9%98%BF%E9%87%8C%E4%BA%911%0Aserver%20203.107.6.88%20%20%20%23%E9%98%BF%E9%87%8C%E4%BA%912%0A%0A%23%20%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84stratum%E5%A4%A7%E5%B0%8F%E4%B8%8D%E8%83%BD%E8%B6%85%E8%BF%8716%3B%0Afudge%20127.127.1.0%20stratum%208%0A%0A%23broadcast%20192.168.1.255%20autokey%09%23%20broadcast%20server%0A%23broadcastclient%09%09%09%23%20broadcast%20client%0A%23broadcast%20224.0.1.1%20autokey%09%09%23%20multicast%20server%0A%23multicastclient%20224.0.1.1%09%09%23%20multicast%20client%0A%23manycastserver%20239.255.254.254%09%09%23%20manycast%20server%0A%23manycastclient%20239.255.254.254%20autokey%20%23%20manycast%20client%0A%0A%23%20Enable%20public%20key%20cryptography.%0A%23crypto%0A%0Aincludefile%20%2Fetc%2Fntp%2Fcrypto%2Fpw%0A%0A%23%20Key%20file%20containing%20the%20keys%20and%20key%20identifiers%20used%20when%20operating%0A%23%20with%20symmetric%20key%20cryptography.%20%0Akeys%20%2Fetc%2Fntp%2Fkeys%0A%0A%23%20Specify%20the%20key%20identifiers%20which%20are%20trusted.%0A%23trustedkey%204%208%2042%0A%0A%23%20Specify%20the%20key%20identifier%20to%20use%20with%20the%20ntpdc%20utility.%0A%23requestkey%208%0A%0A%23%20Specify%20the%20key%20identifier%20to%20use%20with%20the%20ntpq%20utility.%0A%23controlkey%208%0A%0A%23%20Enable%20writing%20of%20statistics%20records.%0A%23statistics%20clockstats%20cryptostats%20loopstats%20peerstats%0A%0A%23%20Disable%20the%20monitoring%20facility%20to%20prevent%20amplification%20attacks%20using%20ntpdc%0A%23%20monlist%20command%20when%20default%20restrict%20does%20not%20include%20the%20noquery%20flag.%20See%0A%23%20CVE-2013-5211%20for%20more%20details.%0A%23%20Note%3A%20Monitoring%20will%20not%20be%20disabled%20with%20the%20limited%20restriction%20flag.%0Adisable%20monitor%0A%0A%60%60%60%0A</center></span>
+</div></body></html> 

@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "加油， 打工人！";
+}
+@model CollectConfig
+
+<style>
+    .card:hover {
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    }
+</style>
+
+<div class="container">
+    <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+        @foreach (var group in Model.Collects.GroupBy(x => x.Category))
+        {
+            <div class="col">
+                <div class="card " style="width: 15rem;">
+                    <div class="card-header">
+                        <span class="text-primary">
+                            <i class="bi bi-bootstrap-fill"></i> @group.Key
+                        </span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var collect in group)
+                        {
+                            <li class="list-group-item">
+                                <a class="text-decoration-none text-dark d-block" target="_blank" href="@collect.Url">
+                                    @if (!string.IsNullOrWhiteSpace(collect.Icon))
+                                    {
+                                        <i class="bi @collect.Icon"></i>
+                                    } @collect.Name
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>

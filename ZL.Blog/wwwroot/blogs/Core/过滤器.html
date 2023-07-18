@@ -1,0 +1,96 @@
+<html>
+<head>
+  <title>Evernote Export</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/607246 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="997"/>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h1 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 41px; border-bottom: 3px double #999; color: #000; margin-top: 14px;">过滤器</h1>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">.NET Core中有五个默认过滤器，分别是异常过滤器、行为过滤器、结果过滤器、资源过滤器、授权过滤器。所有过滤器一般有同步和异步两个版本。这里只记录异步的过滤器。</p>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">1. 异常过滤器 IAsyncExceptionFilter</h2>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">一个项目中，异常过滤器如果存在多个，只有最后注册的异常过滤器才会生效。</p>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">示例：</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;"><span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">public</span> <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">class</span> <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">MyExceptionFilter</span>: <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">IAsyncExceptionFilter</span>
+{
+    <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;"><span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">public</span> Task <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">OnExceptionAsync</span>(<span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">ExceptionContext context</span>)</span>
+    {
+        Exception ex = context.Exception;
+        <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">string</span> message = ex.ToString();
+        ObjectResult result = <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">new</span> ObjectResult(<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">new</span> 
+        {
+            code = <span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">500</span>,
+            message = message
+        });
+        result.StatusCode = <span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">500</span>;
+        context.Result = result;
+        context.ExceptionHandled = <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">true</span>;
+        <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">return</span> Task.CompletedTask;
+    }
+}
+</code></pre>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">全局注册过滤器</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">builder.Services.Configure&lt;MvcOptions&gt;( options =&gt; 
+{
+    options.Filters.Add&lt;MyExceptionFilter&gt;();
+});
+</code></pre>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">2. 行为过滤器 IAsyncActionFilter</h2>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">一个项目中可以注册多个行为过滤器，这些行为过滤器组成一个链，上一个行为过滤器执行完了再执行下一个。如下图所示：<br/>
+<img src="过滤器_files/Image.png" type="image/png" data-filename="Image.png"/></p>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">示例1：</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;"><span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">public</span> <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">class</span> <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">ActionFilter1</span> : <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">IAsyncActionFilter</span>
+{
+    <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;"><span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">public</span> <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">async</span> Task <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">OnActionExecutionAsync</span>(<span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">ActionExecutingContext context, ActionExecutionDelegate next</span>)</span>
+    {
+        Console.WriteLine(<span style="color: #d69d85; line-height: 160%; box-sizing: content-box;">&quot;操作过滤器1：开始执行&quot;</span>);
+        ActionExecutedContext r = <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">await</span> next();
+        <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">if</span> (r.Exception != <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">null</span>)
+        {
+            Console.WriteLine(<span style="color: #d69d85; line-height: 160%; box-sizing: content-box;">&quot;操作过滤器1：执行失败&quot;</span>);
+        }
+         <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">else</span>
+         {
+            Console.WriteLine(<span style="color: #d69d85; line-height: 160%; box-sizing: content-box;">&quot;操作过滤器1：执行成功&quot;</span>);
+         }
+    }
+}
+</code></pre>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">示例2：</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;"><span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">public</span> <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">class</span> <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">ActionFilter2</span> : <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">IAsyncActionFilter</span>
+{
+    <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;"><span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">public</span> <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">async</span> Task <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">OnActionExecutionAsync</span>(<span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">ActionExecutingContext context, ActionExecutionDelegate next</span>)</span>
+    {
+        Console.WriteLine(<span style="color: #d69d85; line-height: 160%; box-sizing: content-box;">&quot;操作过滤器2：开始执行&quot;</span>);
+        ActionExecutedContext r = <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">await</span> next();
+        <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">if</span>(r.Exception != <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">null</span>)
+        {
+            Console.WriteLine(<span style="color: #d69d85; line-height: 160%; box-sizing: content-box;">&quot;操作过滤器2：执行失败&quot;</span>);
+         }
+        <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">else</span>
+        {
+            Console.WriteLine(<span style="color: #d69d85; line-height: 160%; box-sizing: content-box;">&quot;操作过滤器2：执行成功&quot;</span>);
+        }
+    }
+}
+</code></pre>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">全局注册行为过滤器：</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">builder.Services.Configure&lt;MvcOptions&gt;( opt =&gt; 
+{
+    opt.Filters.Add&lt;ActionFilter1&gt;();<span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//注册行为过滤器1</span>
+    opt.Filters.Add&lt;ActionFilter2&gt;();<span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//注册行为过滤器2</span>
+});
+</code></pre>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">随便请求一个接口，打印结果如下：<br/>
+<img src="过滤器_files/Image [1].png" type="image/png" data-filename="Image.png"/></p>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%20%E8%BF%87%E6%BB%A4%E5%99%A8%0A.NET%20Core%E4%B8%AD%E6%9C%89%E4%BA%94%E4%B8%AA%E9%BB%98%E8%AE%A4%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%8C%E5%88%86%E5%88%AB%E6%98%AF%E5%BC%82%E5%B8%B8%E8%BF%87%E6%BB%A4%E5%99%A8%E3%80%81%E8%A1%8C%E4%B8%BA%E8%BF%87%E6%BB%A4%E5%99%A8%E3%80%81%E7%BB%93%E6%9E%9C%E8%BF%87%E6%BB%A4%E5%99%A8%E3%80%81%E8%B5%84%E6%BA%90%E8%BF%87%E6%BB%A4%E5%99%A8%E3%80%81%E6%8E%88%E6%9D%83%E8%BF%87%E6%BB%A4%E5%99%A8%E3%80%82%E6%89%80%E6%9C%89%E8%BF%87%E6%BB%A4%E5%99%A8%E4%B8%80%E8%88%AC%E6%9C%89%E5%90%8C%E6%AD%A5%E5%92%8C%E5%BC%82%E6%AD%A5%E4%B8%A4%E4%B8%AA%E7%89%88%E6%9C%AC%E3%80%82%E8%BF%99%E9%87%8C%E5%8F%AA%E8%AE%B0%E5%BD%95%E5%BC%82%E6%AD%A5%E7%9A%84%E8%BF%87%E6%BB%A4%E5%99%A8%E3%80%82%0A%0A%23%23%201.%20%E5%BC%82%E5%B8%B8%E8%BF%87%E6%BB%A4%E5%99%A8%20IAsyncExceptionFilter%0A%0A%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE%E4%B8%AD%EF%BC%8C%E5%BC%82%E5%B8%B8%E8%BF%87%E6%BB%A4%E5%99%A8%E5%A6%82%E6%9E%9C%E5%AD%98%E5%9C%A8%E5%A4%9A%E4%B8%AA%EF%BC%8C%E5%8F%AA%E6%9C%89%E6%9C%80%E5%90%8E%E6%B3%A8%E5%86%8C%E7%9A%84%E5%BC%82%E5%B8%B8%E8%BF%87%E6%BB%A4%E5%99%A8%E6%89%8D%E4%BC%9A%E7%94%9F%E6%95%88%E3%80%82%0A%0A%E7%A4%BA%E4%BE%8B%EF%BC%9A%0A%60%60%60%20c%23%0Apublic%20class%20MyExceptionFilter%3A%20IAsyncExceptionFilter%0A%7B%0A%20%20%20%20public%20Task%20OnExceptionAsync(ExceptionContext%20context)%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20Exception%20ex%20%3D%20context.Exception%3B%0A%20%20%20%20%20%20%20%20string%20message%20%3D%20ex.ToString()%3B%0A%20%20%20%20%20%20%20%20ObjectResult%20result%20%3D%20new%20ObjectResult(new%20%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20code%20%3D%20500%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20message%20%3D%20message%0A%20%20%20%20%20%20%20%20%7D)%3B%0A%20%20%20%20%20%20%20%20result.StatusCode%20%3D%20500%3B%0A%20%20%20%20%20%20%20%20context.Result%20%3D%20result%3B%0A%20%20%20%20%20%20%20%20context.ExceptionHandled%20%3D%20true%3B%0A%20%20%20%20%20%20%20%20return%20Task.CompletedTask%3B%0A%20%20%20%20%7D%0A%7D%0A%60%60%60%0A%E5%85%A8%E5%B1%80%E6%B3%A8%E5%86%8C%E8%BF%87%E6%BB%A4%E5%99%A8%0A%60%60%60c%23%0Abuilder.Services.Configure%3CMvcOptions%3E(%20options%20%3D%3E%20%0A%7B%0A%20%20%20%20options.Filters.Add%3CMyExceptionFilter%3E()%3B%0A%7D)%3B%0A%60%60%60%0A%0A%23%23%202.%20%E8%A1%8C%E4%B8%BA%E8%BF%87%E6%BB%A4%E5%99%A8%20IAsyncActionFilter%0A%0A%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%8F%AF%E4%BB%A5%E6%B3%A8%E5%86%8C%E5%A4%9A%E4%B8%AA%E8%A1%8C%E4%B8%BA%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%8C%E8%BF%99%E4%BA%9B%E8%A1%8C%E4%B8%BA%E8%BF%87%E6%BB%A4%E5%99%A8%E7%BB%84%E6%88%90%E4%B8%80%E4%B8%AA%E9%93%BE%EF%BC%8C%E4%B8%8A%E4%B8%80%E4%B8%AA%E8%A1%8C%E4%B8%BA%E8%BF%87%E6%BB%A4%E5%99%A8%E6%89%A7%E8%A1%8C%E5%AE%8C%E4%BA%86%E5%86%8D%E6%89%A7%E8%A1%8C%E4%B8%8B%E4%B8%80%E4%B8%AA%E3%80%82%E5%A6%82%E4%B8%8B%E5%9B%BE%E6%89%80%E7%A4%BA%EF%BC%9A%0A!%5Ba50569b00f599491dfc0ec0d509ff06c.png%5D(en-resource%3A%2F%2Fdatabase%2F999%3A1)%0A%0A%E7%A4%BA%E4%BE%8B1%EF%BC%9A%0A%60%60%60%20c%23%0Apublic%20class%20ActionFilter1%20%3A%20IAsyncActionFilter%0A%7B%0A%20%20%20%20public%20async%20Task%20OnActionExecutionAsync(ActionExecutingContext%20context%2C%20ActionExecutionDelegate%20next)%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20Console.WriteLine(%22%E6%93%8D%E4%BD%9C%E8%BF%87%E6%BB%A4%E5%99%A81%EF%BC%9A%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C%22)%3B%0A%20%20%20%20%20%20%20%20ActionExecutedContext%20r%20%3D%20await%20next()%3B%0A%20%20%20%20%20%20%20%20if%20(r.Exception%20!%3D%20null)%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20Console.WriteLine(%22%E6%93%8D%E4%BD%9C%E8%BF%87%E6%BB%A4%E5%99%A81%EF%BC%9A%E6%89%A7%E8%A1%8C%E5%A4%B1%E8%B4%A5%22)%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20else%0A%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20Console.WriteLine(%22%E6%93%8D%E4%BD%9C%E8%BF%87%E6%BB%A4%E5%99%A81%EF%BC%9A%E6%89%A7%E8%A1%8C%E6%88%90%E5%8A%9F%22)%3B%0A%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%60%60%60%0A%E7%A4%BA%E4%BE%8B2%EF%BC%9A%0A%60%60%60%20c%23%0Apublic%20class%20ActionFilter2%20%3A%20IAsyncActionFilter%0A%7B%0A%20%20%20%20public%20async%20Task%20OnActionExecutionAsync(ActionExecutingContext%20context%2C%20ActionExecutionDelegate%20next)%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20Console.WriteLine(%22%E6%93%8D%E4%BD%9C%E8%BF%87%E6%BB%A4%E5%99%A82%EF%BC%9A%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C%22)%3B%0A%20%20%20%20%20%20%20%20ActionExecutedContext%20r%20%3D%20await%20next()%3B%0A%20%20%20%20%20%20%20%20if(r.Exception%20!%3D%20null)%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20Console.WriteLine(%22%E6%93%8D%E4%BD%9C%E8%BF%87%E6%BB%A4%E5%99%A82%EF%BC%9A%E6%89%A7%E8%A1%8C%E5%A4%B1%E8%B4%A5%22)%3B%0A%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20else%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20Console.WriteLine(%22%E6%93%8D%E4%BD%9C%E8%BF%87%E6%BB%A4%E5%99%A82%EF%BC%9A%E6%89%A7%E8%A1%8C%E6%88%90%E5%8A%9F%22)%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%60%60%60%0A%E5%85%A8%E5%B1%80%E6%B3%A8%E5%86%8C%E8%A1%8C%E4%B8%BA%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%9A%0A%60%60%60c%23%0Abuilder.Services.Configure%3CMvcOptions%3E(%20opt%20%3D%3E%20%0A%7B%0A%20%20%20%20opt.Filters.Add%3CActionFilter1%3E()%3B%2F%2F%E6%B3%A8%E5%86%8C%E8%A1%8C%E4%B8%BA%E8%BF%87%E6%BB%A4%E5%99%A81%0A%20%20%20%20opt.Filters.Add%3CActionFilter2%3E()%3B%2F%2F%E6%B3%A8%E5%86%8C%E8%A1%8C%E4%B8%BA%E8%BF%87%E6%BB%A4%E5%99%A82%0A%7D)%3B%0A%60%60%60%0A%E9%9A%8F%E4%BE%BF%E8%AF%B7%E6%B1%82%E4%B8%80%E4%B8%AA%E6%8E%A5%E5%8F%A3%EF%BC%8C%E6%89%93%E5%8D%B0%E7%BB%93%E6%9E%9C%E5%A6%82%E4%B8%8B%EF%BC%9A%0A!%5B0a5c15bcf7a4885015d53ba0df484bef.png%5D(en-resource%3A%2F%2Fdatabase%2F1001%3A0)%0A</center></span>
+</div></body></html> 

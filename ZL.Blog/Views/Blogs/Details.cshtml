@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Blogs";
+}
+@model IEnumerable<Blog>
+<style>
+    #blog-frame {
+        /*width: 100%;
+            height: 760px;*/
+    }
+
+    .blog-details {
+    }
+</style>
+<nav class="navbar navbar-expand-lg bg-body-tertiary px-4 ">
+    <div class="container-fluid shadow-sm">
+        <a class="navbar-brand text-dark" href="/blogs">Blogs</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" data-route="@ViewBag.CurrentCategory" id="blog-category">
+                @foreach (var b in @ViewBag.BlogCategory)
+                {
+                    <li class="nav-item blog-class">
+                        <a class="nav-link text-dark" aria-current="page" href="/blogs/@b.Category/" data-category="@b.Category">@b.Category (@b.Count)</a>
+                    </li>
+                }
+            </ul>
+            <span class="navbar-text">
+                既然记不住，就记录下来，干！
+            </span>
+        </div>
+    </div>
+</nav>
+<div class="container px-4 " style="margin:0;max-width:100vw;">
+    <div class="row gx-8">
+        <div class="col-2">
+            <ul id="blogs" class="list-group list-group-flush shadow" data-current="@ViewBag.CurrentBlog">
+                @foreach (var g in Model.GroupBy(x => x.LastModifyDateTime?.ToString("yyyy")))
+                {
+                    <li class="list-group-item disabled">
+                        @g.Key (@g.Count())
+                    </li>
+                    @foreach (Blog p in g)
+                    {
+                        <li class="blog list-group-item text-dark"
+                    data-src="@p.Path" data-type="@p.FileType.ToString()" data-base64="@p.Path?.Base64Encode()">
+                            <a href="@p.Path?.Base64Encode()" class="text-decoration-none d-flex justify-content-between" style="color:inherit;">
+                                <span>
+                                    @{
+                                        switch (p.FileType)
+                                        {
+                                            case FileType.Blog:
+                                                <i class="bi bi-filetype-html"></i>
+                                                break;
+                                            case FileType.Image:
+                                                <i class="bi bi-image"></i>
+                                                break;
+                                            case FileType.Pdf:
+                                                <i class="bi bi-file-earmark-pdf-fill"></i>
+                                                break;
+                                            case FileType.Word:
+                                                <i class="bi bi-file-earmark-word-fill"></i>
+                                                break;
+                                            case FileType.Text:
+                                                <i class="bi bi-file-earmark-text-fill"></i>
+                                                break;
+                                            case FileType.Markdown:
+                                                <i class="bi bi-filetype-md"></i>
+                                                break;
+                                            case FileType.Other:
+                                                <i class="bi bi-patch-question-fill"></i>
+                                                break;
+                                        }
+                                    }
+                                    @p.Name
+                                </span>
+                                <span class="fs-10 fw-lighter fst-italic">@p.LastModifyDateTime?.ToString("MM-dd")</span>
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        <div class="col-10" id="content">
+            <div class="shadow ratio" style="--bs-aspect-ratio: 54%;">
+                <iframe id="blog-frame" class="bg-white"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/blogs/.NET Core/filter.js" asp-append-version="true"></script>
